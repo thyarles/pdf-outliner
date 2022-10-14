@@ -1,21 +1,29 @@
 # PDF Outliner
 
-## Purpose
+This microsservice is aimed to convert any PDF that have text to the outline form.
 
-This tool is aimed to convert any PDF that have text to the outline form using API.
+## Arquitecture
 
-## OS Dependencies
+
+![image](https://user-images.githubusercontent.com/1340046/195879934-f9ca1045-ed27-4092-947a-d5b85fcdc69e.png)
+
+
+## Operational System dependencies
 
 You must run it on Linux and must assure that the package GhostScript (GS) is proper installed.
 ```bash
 $ sudo apt install ghostscript
+$ gs --version
+9.55.0
 ```
+**Note:** the `NODE_ENV` is not mandatory, if you don't have it, then the default values will be used as production mode.
 
-## Build and run
+## How to build and run
 
-### Production
+### On production
 
 1. To build this to production you must export the env environments
+
     ```dotenv
     # Those are de default values if there's no env at all
     NODE_ENV=production
@@ -32,7 +40,8 @@ $ sudo apt install ghostscript
     $ yarn prod
     ```
 
-### Development
+### On development
+
 1. To build this to production you must export the env environments
     ```dotenv
     NODE_ENV=development
@@ -50,5 +59,9 @@ $ sudo apt install ghostscript
 
 2. Install the dependencies and start nodemon
     ```bash
-    $ yarn run dev
+    $ yarn dev
     ```
+
+## TODO
+
+Add docker stack
