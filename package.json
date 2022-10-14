@@ -17,6 +17,15 @@
       "pre-commit": "lint-staged"
     }
   },
+  "lint-staged": {
+    "*.{ts,js,tsx,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,graphql,gql}": [
+      "prettier --write"
+    ]
+  },
   "keywords": [
     "pdf",
     "outline",
