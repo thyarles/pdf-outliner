@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "deploy:prod": "yarn install --production --frozen-lockfile",
-    "prod": "yarn deploy:prod && src",
+    "prod": "yarn deploy:prod && node src",
     "deploy:dev": "yarn install",
     "dev": "yarn deploy:dev && nodemon src"
   },
