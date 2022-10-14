@@ -14,8 +14,8 @@ const router = express.Router();
 // App settings
 const format = process.env.NODE_ENV === "development" ? "dev" : "combined";
 const root = process.env.NODE_ROOT || "/";
-const inFolder = process.env.NODE_IN_FODER || "/tmp/pdf-outliner/input";
-const outFolder = process.env.NODE_OUT_FODER || "/tmp/pdf-outliner/output";
+const inFolder = process.env.NODE_IN_FOLDER || "/tmp/pdf-outliner/input";
+const outFolder = process.env.NODE_OUT_FOLDER || "/tmp/pdf-outliner/output";
 const timeout = process.env.NODE_TIMEOUT * 60000 || 600000;
 const gs = path.join("/", "usr", "bin", "gs");
 app.set("port", process.env.NODE_PORT || 3000);

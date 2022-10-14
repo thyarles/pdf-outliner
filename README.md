@@ -51,8 +51,8 @@ $ gs --version
     NODE_ROOT='/'
 
     # Place to read and save the file, usually a shared one
-    NODE_IN_FODER=/tmp/pdf-outliner/input
-    NODE_OUT_FODER=/tmp/pdf-outliner/outupt
+    NODE_IN_FOLDER=/tmp/pdf-outliner/input
+    NODE_OUT_FOLDER=/tmp/pdf-outliner/output
     # In minutes
     NODE_TIMEOUT=10
     ```
