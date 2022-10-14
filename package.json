@@ -1,0 +1,30 @@
+{
+  "name": "pdf-outliner",
+  "version": "1.0.0",
+  "description": "Convert text from PDF to outline, making impossible to edit it",
+  "homepage": "https://github.com/thyares/outlinePDF",
+  "main": "index.js",
+  "scripts": {
+    "deploy:prod": "yarn install --production --frozen-lockfile",
+    "prod": "yarn deploy:prod && src",
+    "deploy:dev": "yarn install",
+    "dev": "yarn deploy:dev && nodemon src"
+  },
+  "keywords": [
+    "pdf",
+    "outline",
+    "convert",
+    "api"
+  ],
+  "author": "Charles Santos <thyarles@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "node-fetch": "^3.2.10",
+    "underscore": "^1.13.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
