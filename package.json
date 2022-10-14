@@ -8,7 +8,14 @@
     "deploy:prod": "yarn install --production --frozen-lockfile",
     "prod": "yarn deploy:prod && node src",
     "deploy:dev": "yarn install",
-    "dev": "yarn deploy:dev && nodemon src"
+    "dev": "yarn deploy:dev && nodemon src",
+    "lint": "eslint --ext js,jsx,ts,tsx .",
+    "lint:format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "keywords": [
     "pdf",
@@ -23,6 +30,15 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
-  }
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.1",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1"
+  },
+  "repository": "https://github.com/thyarles/pdf-outliner.git",
+  "private": true
 }
