@@ -17,12 +17,12 @@ $ sudo apt install ghostscript
 
 1. To build this to production you must export the env environments
     ```dotenv
-    # Just for compabilities
+    # Those are de default values if there's no env at all
     NODE_ENV=production
     NODE_PORT=3000
     NODE_ROOT='/'
-    NODE_IN_FODER=/tmp/input
-    NODE_OUT_FODER=/tmp/outupt
+    NODE_IN_FODER=/tmp/pdf-outliner/input
+    NODE_OUT_FODER=/tmp/pdf-outliner/outupt
     # In minutes
     NODE_TIMEOUT=10
     ```
@@ -35,7 +35,6 @@ $ sudo apt install ghostscript
 ### Development
 1. To build this to production you must export the env environments
     ```dotenv
-    # Just for compabilities
     NODE_ENV=development
 
     # Defaults to 3000
@@ -43,8 +42,8 @@ $ sudo apt install ghostscript
     NODE_ROOT='/'
 
     # Place to read and save the file, usually a shared one
-    NODE_IN_FODER=/tmp/input
-    NODE_OUT_FODER=/tmp/outupt
+    NODE_IN_FODER=/tmp/pdf-outliner/input
+    NODE_OUT_FODER=/tmp/pdf-outliner/outupt
     # In minutes
     NODE_TIMEOUT=10
     ```
