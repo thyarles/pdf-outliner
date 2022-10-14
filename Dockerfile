@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN apk update \
- && apk add ghostscript \
+ && apk add curl ghostscript \
  && chown node:node -R /app \
  && yarn deploy:prod
 
