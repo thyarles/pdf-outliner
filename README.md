@@ -16,7 +16,7 @@ $ sudo apt install ghostscript
 $ gs --version
 9.55.0
 ```
-Note: the `NODE_ENV` is not mandatory, if you don't have it, then the default values will be used as production mode.
+**Note:** the `NODE_ENV` is not mandatory, if you don't have it, then the default values will be used as production mode.
 
 ## How to build and run
 
