@@ -62,6 +62,9 @@ $ gs --version
     $ yarn dev
     ```
 
-## TODO
+## Docker
 
-Add docker stack
+If you want just to run it on production, just use Docker
+```bash
+$ docker run --init -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
+```

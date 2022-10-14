@@ -41,6 +41,7 @@ app.use(
 app.use(
   root,
   router.post("/pdf-outliner", (req, res) => {
+
     // Payload expected
     if (!req.body.file) {
       res.status(400);
@@ -63,24 +64,30 @@ app.use(
 
         try {
           execSync(cmd, { stdio: "ignore", timeout });
-          return res.json({
-            message: oFile,
-            success: true,
-            time: (Date.now() - start) / 1000,
-          });
+          return res.json(response(oFile, true, time(start)));
         } catch (convertError) {
           res.status(507); // insufficient storage
-          return res.json({ message: convertError, success: false, time: 0 });
+          return res.json(response(convertError, false, time(start)));
         }
       }
       res.status(404); // file not found
-      return res.json({ message: "file not found", success: false, time: 0 });
+      return res.json(response("file not found", false, 0));
+
     } catch (mainError) {
       res.status(500); // server internal error
-      res.json({ message: JSON.stringify(mainError), success: false, time: 0 });
+      res.json(response( mainError, false, 0 ));
     }
   })
 );
+
+function time(start) {
+    return (Date.now() - start) / 1000;
+}
+
+function response(message, success, time) {
+    if (typeof message === 'object') message = JSON.stringify(message)
+    return { message, success, time };
+}
 
 // Start the server
 app.listen(app.get("port"), () => {
