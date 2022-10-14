@@ -13,11 +13,11 @@ const router = express.Router();
 
 // App settings
 const format = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
-const root = process.env.NODE_ROOT || '/'
+const root = process.env.NODE_ROOT || '/';
 const inFolder = process.env.NODE_IN_FODER || '/tmp/pdf-outliner/input';
 const outFolder = process.env.NODE_OUT_FODER || '/tmp/pdf-outliner/output';
 const timeout = process.env.NODE_TIMEOUT * 60000 || 600000;
-const gs = path.join('/', 'usr', 'bin', 'gs')
+const gs = path.join('/', 'usr', 'bin', 'gs');
 app.set('port', process.env.NODE_PORT || 3000);
 
 // App check - if we don't have ghostscript, lets stop and warn the ops guy to install it
@@ -36,8 +36,15 @@ app.use(root, router.get('/ping', (_req, res) => {
 
 // Main route - you should pass file name on the body ==> { file: 'my-pdf-file.pdf' }
 app.use(root, router.post('/pdf-outliner', (req, res) => {
-    const iFile = path.join(inFolder, req.body.file)
-    const oFile = path.join(outFolder, req.body.file)
+
+    // Payload expected
+    if (!req.body.file) {
+        res.status(400);
+        return res.json({ message: 'bad request', success: false, time: 0 });
+    }
+
+    const iFile = path.join(inFolder, req.body.file);
+    const oFile = path.join(outFolder, req.body.file);
 
     try {
         if (fs.existsSync(iFile)) {
@@ -45,8 +52,8 @@ app.use(root, router.post('/pdf-outliner', (req, res) => {
             const cmd = `${gs} -o ${oFile} -dNoOutputFonts -sDEVICE=pdfwrite ${iFile}`;
 
             // If the dir doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
-            if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, {recursive: true})
-            if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, {recursive: true})
+            if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, {recursive: true});
+            if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, {recursive: true});
 
             try {
                 execSync(cmd, { stdio: 'ignore', timeout });
