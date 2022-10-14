@@ -1,8 +1,12 @@
 # PDF Outliner
 
-## Purpose
+This microsservice is aimed to convert any PDF that have text to the outline form.
 
-This tool is aimed to convert any PDF that have text to the outline form using API.
+## Arquitecture
+
+
+![image](https://user-images.githubusercontent.com/1340046/195879934-f9ca1045-ed27-4092-947a-d5b85fcdc69e.png)
+
 
 ## OS Dependencies
 
@@ -52,3 +56,7 @@ $ sudo apt install ghostscript
     ```bash
     $ yarn run dev
     ```
+
+## TODO
+
+Add docker stack
