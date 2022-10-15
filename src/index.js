@@ -22,6 +22,7 @@ app.set("port", process.env.NODE_PORT || 3000);
 
 // App check - if we don't have ghostscript, lets stop and warn the ops guy to install it
 if (!fs.existsSync(gs)) throw new Error("You must install GhostScript first");
+if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, { recursive: true });
 
 // Middlewares
 app.use(morgan(format));
@@ -55,8 +56,7 @@ app.use(
         const start = Date.now();
         const cmd = `${gs} -o ${oFile} -dNoOutputFonts -sDEVICE=pdfwrite ${iFile}`;
 
-        // If the dir doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
-        if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, { recursive: true });
+        // If the output doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
         if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
         try {
