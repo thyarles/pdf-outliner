@@ -41,7 +41,6 @@ app.use(
 app.use(
   root,
   router.post("/pdf-outliner", (req, res) => {
-
     // Payload expected
     if (!req.body.file) {
       res.status(400);
@@ -57,10 +56,8 @@ app.use(
         const cmd = `${gs} -o ${oFile} -dNoOutputFonts -sDEVICE=pdfwrite ${iFile}`;
 
         // If the dir doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
-        if (!fs.existsSync(inFolder))
-          fs.mkdirSync(inFolder, { recursive: true });
-        if (!fs.existsSync(outFolder))
-          fs.mkdirSync(outFolder, { recursive: true });
+        if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, { recursive: true });
+        if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
         try {
           execSync(cmd, { stdio: "ignore", timeout });
@@ -70,23 +67,23 @@ app.use(
           return res.json(response(convertError, false, time(start)));
         }
       }
+
       res.status(404); // file not found
       return res.json(response("file not found", false, 0));
-
     } catch (mainError) {
       res.status(500); // server internal error
-      res.json(response( mainError, false, 0 ));
+      res.json(response(mainError, false, 0));
     }
   })
 );
 
 function time(start) {
-    return (Date.now() - start) / 1000;
+  return (Date.now() - start) / 1000;
 }
 
 function response(message, success, time) {
-    if (typeof message === 'object') message = JSON.stringify(message)
-    return { message, success, time };
+  if (typeof message === "object") message = JSON.stringify(message);
+  return { message, success, time };
 }
 
 // Start the server
