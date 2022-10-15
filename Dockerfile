@@ -5,10 +5,12 @@ COPY . .
 
 RUN apk update \
  && apk add curl ghostscript \
- && chown node:node -R /app \
+ && mkdir /efs \
+ && chown node:node -R /app /efs \
  && yarn deploy:prod
 
 USER node
 EXPOSE 3000
-CMD ["yarn", "prod"]
+VOLUME /efs
 
+CMD ["yarn", "prod"]
