@@ -29,8 +29,8 @@ $ gs --version
     NODE_ENV=production
     NODE_PORT=3000
     NODE_ROOT='/'
-    NODE_IN_FODER=/tmp/pdf-outliner/input
-    NODE_OUT_FODER=/tmp/pdf-outliner/outupt
+    NODE_IN_FOLDER=/tmp/pdf-outliner/input
+    NODE_OUT_FOLDER=/tmp/pdf-outliner/outupt
     # In minutes
     NODE_TIMEOUT=10
     ```
