@@ -114,7 +114,7 @@ $ gs --version
 
 ## Development
 
-Let's keep the application as simple as possible by following the best practices for code formatation. We know every developer have your way, but when working togheter the code must have standards on the format.
+Let's keep the application as simple as possible by following the best practices for code formatation. We know every developer have your way, but when working togheter the code must have standards on the code style that must be followed by all.
 
 To do this job, we relly on [ESlint](https://eslint.org/) and you should lint your application before the pull requests, otherwise your PR will be deleted. To do so, install `yarn dev` packages and call the lint:
 
