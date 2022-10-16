@@ -124,7 +124,7 @@ Let's keep the application as simple as possible by following the best practices
 
 To do this job, we relly on [ESlint](https://eslint.org/) and you should lint your application before the pull requests, otherwise your PR will be deleted. To do so, install `yarn dev` packages and work as usual. 
 
-When you try to commit the code, the tool [Husky](https://www.npmjs.com/package/husky) will do a lint check and if it find any error, your commit will be denied.
+When you try to commit the code, the tool [Husky](https://www.npmjs.com/package/husky) will do a lint check and if it finds any error, your commit will be denied.
 
 ```bash
 $ yarn install
@@ -265,8 +265,8 @@ Successfully tagged thyarles/pdf-outliner:latest
 ```
 
 # Next steps
-1. Enforce lint as branch protection on GitHub Actions (unfortunatelly Husky allow developer bypass local test, so best make sure)
-1. Do static analysis check using [SonarCloud](https://sonarcloud.io) and block code with low quality gate, with any bugs or with any security issues
-1. Add unit tests
-1. Add integration tests
-1. Block pull requests that doesn't meet the minimum of 60% of coverage using [SonarCloud](https://sonarcloud.io)
+1. Enforce lint as branch protection on GitHub Actions (unfortunately Husky allow developer bypass local test, so best make sure)
+2. Do static analysis check using [SonarCloud](https://sonarcloud.io) and block code with low quality gate, with any bugs or with any security issues
+3. Add unit tests
+4. Add integration tests
+5. Block pull requests that doesn't meet the minimum of 60% of coverage using [SonarCloud](https://sonarcloud.io)
