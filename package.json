@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "deploy:prod": "yarn install --production --frozen-lockfile",
-    "prod": "node src",
+    "prod": "chown -R node:node /efs ; node src",
     "dev": "yarn install && nodemon src",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'"
