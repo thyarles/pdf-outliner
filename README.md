@@ -122,7 +122,9 @@ Use this as container healthy check.
 
 Let's keep the application as simple as possible by following the best practices for code style. We know every developer have your way, but when working together the code must have standards on the code style that must be followed by all.
 
-To do this job, we relly on [ESlint](https://eslint.org/) and you should lint your application before the pull requests, otherwise your PR will be deleted. To do so, install `yarn dev` packages and call the lint:
+To do this job, we relly on [ESlint](https://eslint.org/) and you should lint your application before the pull requests, otherwise your PR will be deleted. To do so, install `yarn dev` packages and work as usual. 
+
+When you try to commit the code, the tool [Husky](https://www.npmjs.com/package/husky) will do a lint check and if it find any error, your commit will be denied.
 
 ```bash
 $ yarn install
@@ -132,12 +134,22 @@ yarn install v1.22.17
 success Already up-to-date.
 Done in 0.22s.
 
-$ yarn lint
+$ git commit -m "test: checking if husky will block the commit due a unused const"
 ### OUTPUT ###
 yarn run v1.22.17
 $ eslint --ext js,jsx,ts,tsx .
-Done in 0.62s.
+
+/media/thyarles/LinuxData/bitcot/pdf-outliner/src/index.js
+  22:7  error  'testLint' is assigned a value but never used  no-unused-vars
+
+✖ 1 problem (1 error, 0 warnings)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+husky - pre-commit hook exited with code 1 (error)
 ```
+
+So you need to look into do error, fix it and try another commit. The most common IDEs will warn you about those errors in real time.
 
 Most of the code style errors can be automatically fixed, you just need to call like that:
 
@@ -156,18 +168,18 @@ Done in 0.51s.
 
 If you believe in me and don't want to install a thing, just use the Docker image:
 
-### Run in frontend (you can see the logs)
+### Run in frontend mode (you can see the logs)
 ```bash
-$ docker run --init -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
+$ docker run --init -p 3000:3000 -v /tmp/pdf-outliner:/tmp/pdf-outliner thyarles/pdf-outliner:latest
 ### OUTPUT ###
 yarn run v1.22.19
 $ node src
 Server on port 3000
 ```
 
-### Run in backend (you can't see the logs)
+### Run in backend mode (you can't see the logs)
 ```bash
-$ docker run -d -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
+$ docker run --detach --restart unless-stopped --publish 3000:3000 --volume /tmp/pdf-outliner:/tmp/pdf-outliner thyarles/pdf-outliner:latest
 ```
 
 If you don't believe in me (you shouldn't) you can read the code, change it and generate your own image:
@@ -253,9 +265,8 @@ Successfully tagged thyarles/pdf-outliner:latest
 ```
 
 # Next steps
-1. Enforce lint before pull request using [Husky](https://www.npmjs.com/package/husky)
-2. Enforce lint as branch protection on GitHub Actions (unfortunately Husky allow developer bypass local test, so best make sure)
-3. Do static analysis check using [SonarCloud](https://sonarcloud.io) and block code with low quality gate, with any bugs or with any security issues
-4. Add unit tests
-5. Add integration tests
-6. Block pull requests that doesn't meet the minimum of 60% of coverage using [SonarCloud](https://sonarcloud.io)
+1. Enforce lint as branch protection on GitHub Actions (unfortunatelly Husky allow developer bypass local test, so best make sure)
+1. Do static analysis check using [SonarCloud](https://sonarcloud.io) and block code with low quality gate, with any bugs or with any security issues
+1. Add unit tests
+1. Add integration tests
+1. Block pull requests that doesn't meet the minimum of 60% of coverage using [SonarCloud](https://sonarcloud.io)
