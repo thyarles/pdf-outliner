@@ -19,6 +19,7 @@ const outFolder = process.env.NODE_OUT_FOLDER || "/tmp/pdf-outliner/output";
 const timeout = process.env.NODE_TIMEOUT * 60000 || 600000;
 const gs = path.join("/", "usr", "bin", "gs");
 app.set("port", process.env.NODE_PORT || 3000);
+const testLint = null
 
 // App check - if we don't have ghostscript, lets stop and warn the ops guy to install it
 if (!fs.existsSync(gs)) throw new Error("You must install GhostScript first");
