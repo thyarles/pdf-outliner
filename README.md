@@ -80,14 +80,13 @@ $ gs --version
 
 ## Healthy check
 
-Use this as container healthy check.
+Use this as container healthy check. To check if the API is healthy
 
-1. To check if the API is healthy
-    ```bash
-    $ curl -f localhost:3000/ping
-    ### OUTPUT ###
-    {"message":"pong","success":true,"time":0}
-    ```
+```bash
+$ curl -f localhost:3000/ping
+### OUTPUT ###
+{"message":"pong","success":true,"time":0}
+```
 
 ## How to test
 
@@ -118,7 +117,7 @@ Use this as container healthy check.
     -rw-rw-r-- 1 thyarles thyarles 988K Oct 15 20:40 test.pdf
     ```
 
-## Development
+## How to contribute
 
 Let's keep the application as simple as possible by following the best practices for code style. We know every developer have your way, but when working together the code must have standards on the code style that must be followed by all.
 
