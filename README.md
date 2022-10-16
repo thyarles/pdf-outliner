@@ -12,6 +12,7 @@ This microservice is aimed to convert any PDF that have text to the outline form
 4. [How to test](#how-to-test)
 5. [How to contribute](#how-to-contribute)
 6. [How to run it on Docker](#how-to-run-it-on-docker)
+7. [Next steps](#next-steps)
 
 
 ## Architecture
