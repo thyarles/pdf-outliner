@@ -9,8 +9,7 @@
     "prod": "node src",
     "dev": "yarn install && nodemon src",
     "lint": "eslint --ext js,jsx,ts,tsx .",
-    "lint:format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'",
-    "prepare": "husky install"
+    "lint:format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'"
   },
   "keywords": [
     "pdf",
