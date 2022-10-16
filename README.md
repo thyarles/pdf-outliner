@@ -1,8 +1,8 @@
 # PDF Outliner
 
-This microsservice is aimed to convert any PDF that have text to the outline form.
+This microservice is aimed to convert any PDF that have text to the outline form.
 
-## Arquitecture
+## Architecture
 
 ![image](https://user-images.githubusercontent.com/1340046/195879934-f9ca1045-ed27-4092-947a-d5b85fcdc69e.png)
 
@@ -78,28 +78,34 @@ $ gs --version
     Server on port 3000
     ```
 
-3. Test if API is ready [use this as container healthy check]
+## Healthy check
+
+Use this as container healthy check.
+
+1. To check if the API is healthy
     ```bash
     $ curl -f localhost:3000/ping
     ### OUTPUT ###
-    {"response":"pong"}
+    {"message":"pong","success":true,"time":0}
     ```
 
-4. Test a real API call
+## How to test
+
+1. Test a failed API call
     ```bash
     $ curl -X POST localhost:3000/pdf-outliner -d file=test.pdf
     ### OUTPUT ###
     {"message":"file not found","success":false,"time":0}
     ```
 
-5. Add a `test.pdf` file on `NODE_IN_FOLDER` and call the API again
+2. Add a `test.pdf` file on `NODE_IN_FOLDER` and test a successful API call
     ```bash
     $ curl -X POST localhost:3000/pdf-outliner -d file=test.pdf
     ### OUTPUT ###
     {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":1.606}
     ```
 
-6. Check if the file was really created
+3. Check if the file was created as expected
     ```bash
     $ ls -lh /tmp/pdf-outliner/*
     ### OUTPUT ###
@@ -114,7 +120,7 @@ $ gs --version
 
 ## Development
 
-Let's keep the application as simple as possible by following the best practices for code formatation. We know every developer have your way, but when working togheter the code must have standards on the code style that must be followed by all.
+Let's keep the application as simple as possible by following the best practices for code style. We know every developer have your way, but when working together the code must have standards on the code style that must be followed by all.
 
 To do this job, we relly on [ESlint](https://eslint.org/) and you should lint your application before the pull requests, otherwise your PR will be deleted. To do so, install `yarn dev` packages and call the lint:
 
@@ -133,7 +139,7 @@ $ eslint --ext js,jsx,ts,tsx .
 Done in 0.62s.
 ```
 
-Most of the formatation errors can be automaticaly fixed, you just need to call like that:
+Most of the code style errors can be automatically fixed, you just need to call like that:
 
 ```bash
 $ yarn lint:format
@@ -148,7 +154,7 @@ Done in 0.51s.
 
 ## Docker
 
-If you believe in me and don't wan't to install a thing, just use the Docker image:
+If you believe in me and don't want to install a thing, just use the Docker image:
 
 ### Run in frontend (you can see the logs)
 ```bash
@@ -159,7 +165,7 @@ $ node src
 Server on port 3000
 ```
 
-### Run in backent (you can't see the logs)
+### Run in backend (you can't see the logs)
 ```bash
 $ docker run -d -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
 ```
@@ -248,8 +254,8 @@ Successfully tagged thyarles/pdf-outliner:latest
 
 # Next steps
 1. Enforce lint before pull request using [Husky](https://www.npmjs.com/package/husky)
-2. Enforce lint as branch protection on GitHub Actions (unfortunatelly Husky allow developer bypass local test, so best make sure)
+2. Enforce lint as branch protection on GitHub Actions (unfortunately Husky allow developer bypass local test, so best make sure)
 3. Do static analysis check using [SonarCloud](https://sonarcloud.io) and block code with low quality gate, with any bugs or with any security issues
 4. Add unit tests
-6. Add integration tests
-7. Block pull requests that doesn't meed the mininum of 60% of coverage using [SonarCloud](https://sonarcloud.io)
+5. Add integration tests
+6. Block pull requests that doesn't meet the minimum of 60% of coverage using [SonarCloud](https://sonarcloud.io)

@@ -33,8 +33,7 @@ app.use(express.json());
 app.use(
   root,
   router.get("/ping", (_req, res) => {
-    const data = { response: "pong" };
-    res.json(data);
+    return res.json(response("pong", true, 0));
   })
 );
 
