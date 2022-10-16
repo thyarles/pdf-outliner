@@ -160,18 +160,18 @@ Done in 0.51s.
 
 If you believe in me and don't wan't to install a thing, just use the Docker image:
 
-### Run in frontend (you can see the logs)
+### Run in frontend mode (you can see the logs, prefered to test)
 ```bash
-$ docker run --init -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
+$ docker run --init -p 3000:3000 -v /tmp/pdf-outliner:/tmp/pdf-outliner thyarles/pdf-outliner:latest
 ### OUTPUT ###
 yarn run v1.22.19
 $ node src
 Server on port 3000
 ```
 
-### Run in backent (you can't see the logs)
+### Run in backend mode (you can't see the logs, prefered to production)
 ```bash
-$ docker run -d -v /tmp/pdf-outliner:/tmp/pdf-outliner -p 3000:3000 thyarles/pdf-outliner:latest
+$ docker run --detach --restart unless-stopped --publish 3000:3000 --volume /tmp/pdf-outliner:/tmp/pdf-outliner thyarles/pdf-outliner:latest
 ```
 
 If you don't believe in me (you shouldn't) you can read the code, change it and generate your own image:
