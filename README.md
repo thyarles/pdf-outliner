@@ -2,12 +2,24 @@
 
 This microservice is aimed to convert any PDF that have text to the outline form.
 
+## Table of contents
+1. [Architecture](#architecture)
+2. [OS dependencies](#operational-system-dependencies)
+   1. [How to build and run](#how-to-build-and-run)
+      1. [On production](#on-production)
+      2. [On development](#on-development)
+3. [How to check healthy](#how-to-check-healthy)
+4. [How to test](#how-to-test)
+5. [How to contribute](#how-to-contribute)
+6. [How to run it on Docker](#how-to-run-it-on-docker)
+
+
 ## Architecture
 
 ![image](https://user-images.githubusercontent.com/1340046/195879934-f9ca1045-ed27-4092-947a-d5b85fcdc69e.png)
 
 
-## Operational System dependencies
+## Operational system dependencies
 
 You must run it on Linux and must assure that the package GhostScript (GS) is proper installed.
 ```bash
@@ -78,7 +90,7 @@ $ gs --version
     Server on port 3000
     ```
 
-## Healthy check
+## How to check healthy
 
 Use this as container healthy check. To check if the API is healthy
 
@@ -163,7 +175,7 @@ src/index.js 73ms
 Done in 0.51s.
 ```
 
-## Docker
+## How to run it on Docker
 
 If you believe in me and don't want to install a thing, just use the Docker image:
 
