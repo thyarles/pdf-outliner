@@ -18,11 +18,16 @@ const inFolder = process.env.NODE_IN_FOLDER || "/tmp/pdf-outliner/input";
 const outFolder = process.env.NODE_OUT_FOLDER || "/tmp/pdf-outliner/output";
 const timeout = process.env.NODE_TIMEOUT * 60000 || 600000;
 const gs = path.join("/", "usr", "bin", "gs");
+const ppm = path.join("/", "usr", "bin", "pdftoppm");
+const img2pdf = path.join("/", "usr", "bin", "img2pdf");
 app.set("port", process.env.NODE_PORT || 3000);
 
 // App check - if we don't have ghostscript, lets stop and warn the ops guy to install it
 if (!fs.existsSync(gs)) throw new Error("You must install GhostScript first");
+if (!fs.existsSync(ppm)) throw new Error("You must install pdftoppm first");
+if (!fs.existsSync(img2pdf)) throw new Error("You must install img2pdf first");
 if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, { recursive: true });
+if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
 // Middlewares
 app.use(morgan(format));
@@ -37,10 +42,10 @@ app.use(
   })
 );
 
-// Main route - you should pass file name on the body ==> { file: 'my-pdf-file.pdf' }
+// outliner: you should pass file name on the body ==> { file: 'my-pdf-file.pdf' }
 app.use(
   root,
-  router.post("/pdf-outliner", (req, res) => {
+  router.post("/outline", (req, res) => {
     // Payload expected
     if (!req.body.file) {
       res.status(400);
@@ -75,6 +80,60 @@ app.use(
       res.json(response(mainError, false, 0));
     }
   })
+);
+
+// jpgizer: you should pass file name on the body ==> { file: 'my-pdf-file.pdf' }
+app.use(
+    root,
+    router.post("/frozen", (req, res) => {
+        // Payload expected
+        if (!req.body.file) {
+            res.status(400);
+            return res.json({ message: "bad request", success: false, time: 0 });
+        }
+
+        const iFile = path.join(inFolder, req.body.file);
+        const oFile = path.join(outFolder, req.body.file);
+        let jpgQuality = 10;        // from 0 to 100, bigger is better and timer consuming
+        let jpgResolution = 300;    // 300 is enough for press, less to small file only (mobile)
+
+        if (req.body.options) {
+            const options = req.body.options;
+
+            if (options.jpgQuality) jpgQuality = options.jpgQuality;
+            if (options.jpgResolution) jpgResolution = options.jpgResolution;
+        }
+
+        try {
+            if (fs.existsSync(iFile)) {
+                const start = Date.now();
+                const step1 = `${ppm} ${iFile} ${iFile}JPG -jpeg -jpegopt progressive=n,quality=${jpgQuality} -rx ${jpgResolution} -ry ${jpgResolution} -aaVector yes`;
+                const step2 = `${img2pdf} $(find ${inFolder} -maxdepth 1 -iname '*.jpg' | sort -V) -o ${oFile}`;
+                const step3 = `rm ${inFolder}/*.jpg`;
+
+                // If the output doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
+                if (!fs.existsSync(outFolder))
+                    fs.mkdirSync(outFolder, { recursive: true });
+
+                try {
+                    execSync(step1, { stdio: "ignore", timeout });
+                    execSync(step2, { stdio: "ignore", timeout });
+                    execSync(step3, { stdio: "ignore", timeout });
+                    return res.json(response(oFile, true, time(start)));
+                } catch (convertError) {
+                    res.status(507); // insufficient storage
+                    execSync(step3, { stdio: "ignore", timeout });
+                    return res.json(response(convertError, false, time(start)));
+                }
+            }
+
+            res.status(404); // file not found
+            return res.json(response("file not found", false, 0));
+        } catch (mainError) {
+            res.status(500); // server internal error
+            res.json(response(mainError, false, 0));
+        }
+    })
 );
 
 function time(start) {

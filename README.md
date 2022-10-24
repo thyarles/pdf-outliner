@@ -9,7 +9,7 @@ This microservice is aimed to convert any PDF that have text to the outline form
       1. [On production](#on-production)
       2. [On development](#on-development)
 3. [How to check healthy](#how-to-check-healthy)
-4. [How to test](#how-to-test)
+4. [How to use](#how-to-use)
 5. [How to contribute](#how-to-contribute)
 6. [How to run it on Docker](#how-to-run-it-on-docker)
 7. [Next steps](#next-steps)
@@ -22,12 +22,16 @@ This microservice is aimed to convert any PDF that have text to the outline form
 
 ## Operational system dependencies
 
-You must run it on Linux and must assure that the package GhostScript (GS) is proper installed.
+You must run it on Linux and must assure that the packages `ghostscript`, `pdftoppm` and `img2pdf` are installed.
 ```bash
-$ sudo apt install ghostscript
-$ gs --version
+$ sudo apt install ghostscript poppler-utils img2pdf
+$ gs --version && pdftoppm -v && img2pdf --version
 ### OUTPUT ###
 9.55.0
+pdftoppm version 22.02.0
+Copyright 2005-2022 The Poppler Developers - http://poppler.freedesktop.org
+Copyright 1996-2011 Glyph & Cog, LLC
+img2pdf 0.4.2
 ```
 **Note:** the `NODE_ENV` is not mandatory, if you don't have it, then the default values will be used as production mode.
 
@@ -101,18 +105,20 @@ $ curl -f localhost:3000/ping
 {"message":"pong","success":true,"time":0}
 ```
 
-## How to test
+## How to use
+
+### Outline endpoint
 
 1. Test a failed API call
     ```bash
-    $ curl -X POST localhost:3000/pdf-outliner -d file=test.pdf
+    $ curl -X POST localhost:3000/outline -d file=test.pdf
     ### OUTPUT ###
     {"message":"file not found","success":false,"time":0}
     ```
 
 2. Add a `test.pdf` file on `NODE_IN_FOLDER` and test a successful API call
     ```bash
-    $ curl -X POST localhost:3000/pdf-outliner -d file=test.pdf
+    $ curl -X POST localhost:3000/outline -d file=test.pdf
     ### OUTPUT ###
     {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":1.606}
     ```
@@ -130,6 +136,31 @@ $ curl -f localhost:3000/ping
     -rw-rw-r-- 1 thyarles thyarles 988K Oct 15 20:40 test.pdf
     ```
 
+### Frozen endpoint
+
+1. Test a failed API call
+    ```bash
+    $ curl -X POST localhost:3000/frozen -d file=test.pdf
+    ### OUTPUT ###
+    {"message":"file not found","success":false,"time":0}
+    ```
+
+2. Add a `test.pdf` file on `NODE_IN_FOLDER` and test a successful API call
+    ```bash
+    $ curl -X POST localhost:3000/frozen -d file=test.pdf
+    ### OUTPUT ###
+    {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":35.689}
+    ```
+
+3. You can tune the options, the default values are `jpgQuality = 10` and `jpgResolution = 300` DPIs.
+    ```bash
+    $ curl -X POST -H 'Content-Type: application/json' localhost:3000/frozen -d '{ "file": "test.pdf", "options": { "jpgQuality": 10, "jpgResolution": 150 }}'
+    ### OUTPUT ###
+    {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":11.748}
+    ```
+
+4. As you can see, with the half of the original resolution you processed it in about `1/3` of the original time (`36 seconds` against `12 seconds`), so the resolution matters on the processing time. Also matters on the size of the file. On the call without the options, the final size was `14.2 MB`, with half of the resolution, it was only `4.6 MB`.
+   
 ## How to contribute
 
 Let's keep the application as simple as possible by following the best practices for code style. We know every developer have your way, but when working together the code must have standards on the code style that must be followed by all.
