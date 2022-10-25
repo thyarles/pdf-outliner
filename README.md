@@ -1,6 +1,6 @@
 # PDF Outliner
 
-This microservice is aimed to convert any PDF that have text to the outline form.
+This microservice is aimed to convert any PDF that have text to the outline form or convert all page to JPG inside the PDF using the desired quality and density.
 
 ## Table of contents
 1. [Architecture](#architecture)
