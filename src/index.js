@@ -109,7 +109,7 @@ app.use(
                 const start = Date.now();
                 const step1 = `${ppm} ${iFile} ${iFile}JPG -jpeg -jpegopt progressive=n,quality=${jpgQuality} -rx ${jpgResolution} -ry ${jpgResolution} -aaVector yes`;
                 const step2 = `${img2pdf} $(find ${inFolder} -maxdepth 1 -iname '*.jpg' | sort -V) -o ${oFile}`;
-                const step3 = `rm ${inFolder}/*.jpg`;
+                const step3 = `rm ${inFolder}/${iFile}JPG*`;
 
                 // If the output doesn't exist, let's create it. Why believe that the infra guy will do it when we can do it?
                 if (!fs.existsSync(outFolder))
