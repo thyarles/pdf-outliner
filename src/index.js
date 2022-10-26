@@ -30,7 +30,7 @@ if (!fs.existsSync(inFolder)) fs.mkdirSync(inFolder, { recursive: true });
 if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, { recursive: true });
 
 // Clean old files
-const clean = "find /tmp/pdf-outliner -mtime +7 -delete;";
+const clean = "find /tmp/pdf-outliner -mtime +7 -delete";
 try {
   execSync(clean, { stdio: "ignore", timeout });
 } catch (_e) {
