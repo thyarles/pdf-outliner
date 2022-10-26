@@ -1,6 +1,6 @@
 # PDF Outliner
 
-This microservice is aimed to convert any PDF that have text to the outline form.
+This microservice is aimed to convert any PDF that have text to the outline form or convert all page to JPG inside the PDF using the desired quality and density.
 
 ## Table of contents
 1. [Architecture](#architecture)
@@ -138,28 +138,21 @@ $ curl -f localhost:3000/ping
 
 ### Frozen endpoint
 
-1. Test a failed API call
-    ```bash
-    $ curl -X POST localhost:3000/frozen -d file=test.pdf
-    ### OUTPUT ###
-    {"message":"file not found","success":false,"time":0}
-    ```
-
-2. Add a `test.pdf` file on `NODE_IN_FOLDER` and test a successful API call
+1. Add a `test.pdf` file on `NODE_IN_FOLDER` and test a successful API call
     ```bash
     $ curl -X POST localhost:3000/frozen -d file=test.pdf
     ### OUTPUT ###
     {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":35.689}
     ```
 
-3. You can tune the options, the default values are `jpgQuality = 10` and `jpgResolution = 300` DPIs.
+2. You can tune the options, the default values are `jpgQuality = 10` and `jpgResolution = 300` DPI.
     ```bash
     $ curl -X POST -H 'Content-Type: application/json' localhost:3000/frozen -d '{ "file": "test.pdf", "options": { "jpgQuality": 10, "jpgResolution": 150 }}'
     ### OUTPUT ###
     {"message":"/tmp/pdf-outliner/output/test.pdf","success":true,"time":11.748}
     ```
 
-4. As you can see, with the half of the original resolution you processed it in about `1/3` of the original time (`36 seconds` against `12 seconds`), so the resolution matters on the processing time. Also matters on the size of the file. On the call without the options, the final size was `14.2 MB`, with half of the resolution, it was only `4.6 MB`.
+3. As you can see, with the half of the original resolution you processed it in about `1/3` of the original time (`36 seconds` against `12 seconds`), so the resolution matters on the processing time. Also matters on the size of the file. On the call without the options, the final size was `14.2 MB`, with half of the resolution, it was only `4.6 MB`.
    
 ## How to contribute
 
