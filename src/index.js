@@ -20,6 +20,7 @@ const timeout = process.env.NODE_TIMEOUT * 60000 || 600000;
 const gs = path.join("/", "usr", "bin", "gs");
 const ppm = path.join("/", "usr", "bin", "pdftoppm");
 const img2pdf = path.join("/", "usr", "bin", "img2pdf");
+
 app.set("port", process.env.NODE_PORT || 3000);
 
 // App check - if we don't have ghostscript, lets stop and warn the ops guy to install it
@@ -91,66 +92,66 @@ app.use(
 // jpgizer: you should pass file name on the body ==> { file: 'my-pdf-file.pdf' }
 app.use(
   root,
-  router.post("/frozen", (req, res) => {
-    // Payload expected
-    if (!req.body.file) {
-      res.status(400);
-      return res.json(response("bad request (missing file)", false, 0));
-    }
-
-    const iFile = path.join(inFolder, req.body.file);
-    const oFile = path.join(outFolder, req.body.file);
-    let jpgQuality = 10; // from 0 to 100, bigger is better on small resolutions
-    let jpgResolution = 300; // 300 is enough for press, 150 to mobile
-
-    if (req.body.options) {
-      const options = req.body.options;
-      if (options.jpgQuality) jpgQuality = options.jpgQuality;
-      if (options.jpgResolution) jpgResolution = options.jpgResolution;
-    }
-
-    if (fs.existsSync(iFile)) {
-      const start = Date.now();
-      const step1 = `${ppm} ${iFile} ${start} -jpeg -jpegopt progressive=n,quality=${jpgQuality} -rx ${jpgResolution} -ry ${jpgResolution} -aaVector yes`;
-      const step2 = `${img2pdf} $(find -maxdepth 1 -iname '${start}*.jpg' | sort -V) -o ${oFile}`;
-      const step3 = `rm ${start}*`;
-
-      if (!fs.existsSync(outFolder))
-        fs.mkdirSync(outFolder, { recursive: true });
-
-      try {
-        console.log(step1);
-        execSync(step1, { stdio: "ignore", timeout });
-      } catch (_step1) {
-        res.status(507);
-
-        return res.json(
-          response("failed on extract pages (step 1)", false, time(start))
-        );
+  router.post("/frozen", async (req, res) => {
+      // Payload expected
+      if (!req.body.file) {
+          res.status(400);
+          return res.json(response("bad request (missing file)", false, 0));
       }
 
-      try {
-        console.log(step2);
-        execSync(step2, { stdio: "ignore", timeout });
-      } catch (_step2) {
-        res.status(507);
-        return res.json(
-          response("failed to merge pdf (step 2)", false, time(start))
-        );
+      const iFile = path.join(inFolder, req.body.file);
+      const oFile = path.join(outFolder, req.body.file);
+      let jpgQuality = 10; // from 0 to 100, bigger is better on small resolutions
+      let jpgResolution = 300; // 300 is enough for press, 150 to mobile
+
+      if (req.body.options) {
+          const options = req.body.options;
+          if (options.jpgQuality) jpgQuality = options.jpgQuality;
+          if (options.jpgResolution) jpgResolution = options.jpgResolution;
       }
 
-      try {
-        execSync(step3, { stdio: "ignore", timeout });
-      } catch (convertError) {
-        console.log("failed to clean JPGs (step 3)");
+      if (fs.existsSync(iFile)) {
+          const start = Date.now();
+          const step1 = `${ppm} ${iFile} ${start} -jpeg -jpegopt progressive=n,quality=${jpgQuality} -rx ${jpgResolution} -ry ${jpgResolution} -aaVector yes`;
+          const step2 = `${img2pdf} $(find -maxdepth 1 -iname '${start}*.jpg' | sort -V) -o ${oFile}`;
+          const step3 = `rm ${start}*`;
+
+          if (!fs.existsSync(outFolder))
+              fs.mkdirSync(outFolder, {recursive: true});
+
+          try {
+              // TODO: fix this delay to a better alternative
+              execSync('sleep 5', {stdio: "ignore", timeout});
+              execSync(step1, {stdio: "ignore", timeout});
+          } catch (_step1) {
+              res.status(507);
+
+              return res.json(
+                  response("failed on extract pages (step 1)", false, time(start))
+              );
+          }
+
+          try {
+              execSync(step2, {stdio: "ignore", timeout});
+          } catch (_step2) {
+              res.status(507);
+              return res.json(
+                  response("failed to merge pdf (step 2)", false, time(start))
+              );
+          }
+
+          try {
+              execSync(step3, {stdio: "ignore", timeout});
+          } catch (convertError) {
+              console.log("failed to clean JPGs (step 3)");
+          }
+
+          res.status(200);
+          return res.json(response(oFile, true, time(start)));
       }
 
-      res.status(200);
-      return res.json(response(oFile, true, time(start)));
-    }
-
-    res.status(404);
-    return res.json(response("file not found", false, 0));
+      res.status(404);
+      return res.json(response("file not found", false, 0));
   })
 );
 
