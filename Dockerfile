@@ -1,10 +1,10 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 COPY . .
 
-RUN apk update \
- && apk add curl ghostscript poppler-utils py3-img2pdf \
+RUN apt-get update \
+ && apt-get install  -y curl ghostscript poppler-utils img2pdf \
  && chown node:node -R /app \
  && yarn deploy:prod
 
