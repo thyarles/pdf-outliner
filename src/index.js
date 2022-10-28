@@ -36,11 +36,12 @@ if (!fs.existsSync(outFolder)) fs.mkdirSync(outFolder, {recursive: true});
 
 // Clean old files
 try {
-  const clean = `${find} /tmp/pdf-outliner -mtime +7 -delete`;
-  execSync(clean, {stdio: "ignore", timeout: 30000});
-  console.log("files older then 7 days was cleaned")
-} catch (e) {
-  console.log(e);
+  const cleanIn = `${find} ${process.env.NODE_IN_FOLDER} -mtime +7 -delete`;
+  const cleanOut = `${find} ${process.env.NODE_OUT_FOLDER} -mtime +7 -delete`;
+  execSync(cleanIn, {stdio: "pipe", timeout: 30000});
+  execSync(cleanOut, {stdio: "pipe", timeout: 30000});
+} catch (_e) {
+  console.log("failed to clean old files");
 }
 
 // Middlewares
