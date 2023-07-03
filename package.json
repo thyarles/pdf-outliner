@@ -31,7 +31,7 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "nodemon": "^2.0.20",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.8",
     "husky": "^8.0.0"
   },
   "repository": "https://github.com/thyarles/pdf-outliner.git",
