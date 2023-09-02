@@ -1,6 +1,6 @@
 {
   "name": "pdf-outliner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert text from PDF to outline, making impossible to edit it",
   "homepage": "https://github.com/thyares/outlinePDF",
   "main": "index.js",
@@ -13,10 +13,12 @@
     "lint:format": "prettier --write '**/*.{ts,tsx,js,jsx,json}'"
   },
   "keywords": [
-    "pdf",
-    "outline",
+    "api",
     "convert",
-    "api"
+    "outline",
+    "pdf",
+    "gosthscript",
+    "poopler-utils"
   ],
   "author": "Charles Santos <thyarles@gmail.com>",
   "license": "UNLICENSED",
