@@ -23,7 +23,7 @@
   "author": "Charles Santos <thyarles@gmail.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.18.3",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
