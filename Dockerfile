@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:stable
 
 WORKDIR /app
 COPY . .
